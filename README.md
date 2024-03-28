@@ -6,7 +6,7 @@ Code implementation of the [Distributed Distributional DrQ][paper] algorithm in 
 Distributed Distributional method is based on the D4PG original paper: [[ArXiv]](https://arxiv.org/abs/1804.08617).
 
 Part code based on original DrQ-v2 implementation code from the facebook AI research:
-[[Mastering Visual Continuous Control: Improved Data-Augmented Reinforcement Learning]]([https://arxiv.org/abs/2107.09645])
+[[Mastering Visual Continuous Control: Improved Data-Augmented Reinforcement Learning]](https://arxiv.org/abs/2107.09645)
 
 Implementation code of D4PG reference from [[D4PG-pytorch]](https://github.com/PacktPublishing/Deep-Reinforcement-Learning-Hands-On/blob/master/Chapter14/06_train_d4pg.py)
 
