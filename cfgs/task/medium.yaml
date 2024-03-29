@@ -1,0 +1,4 @@
+num_train_frames: 3100001
+#num_train_frames: 3100000
+stddev_schedule: 'linear(1.0,0.1,500000)'
+#stddev_schedule: 'linear(1.0,0.1,500000)'

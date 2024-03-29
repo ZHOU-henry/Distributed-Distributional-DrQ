@@ -1,0 +1,87 @@
+defaults:
+  - _self_
+  - task@_global_: walker_walk
+  - override hydra/launcher: submitit_local
+
+
+seed: 1
+load_model: False
+
+task_name: walker_walk
+# task settings
+frame_stack: 3
+action_repeat: 2
+discount: 0.99
+# train settings
+num_seed_frames: 4000
+# eval
+eval_every_frames: 20000
+#eval_every_frames: 10000
+num_eval_episodes: 10
+# snapshot
+save_snapshot: false
+# replay buffer
+replay_buffer_size: 1000000
+replay_buffer_num_workers: 4
+nstep: 3
+batch_size: 256
+# misc
+device: cuda
+save_video: false
+save_train_video: false
+use_tb: true
+# experiment
+experiment: exp
+# agent
+lr: 1e-4
+feature_dim: 50
+
+agent:
+  _target_: drqv2.DrQV2Agent
+  obs_shape: ??? # to be specified later
+  action_shape: ??? # to be specified later
+  device: ${device}
+  lr: ${lr}
+  critic_target_tau: 0.01
+
+  actor_target_tau: 0.1 ## 0.01
+
+  update_every_steps: 2
+  use_tb: ${use_tb}
+  num_expl_steps: 2000
+  #num_expl_steps: 2000
+  hidden_dim: 1024
+  feature_dim: ${feature_dim}
+  stddev_schedule: ${stddev_schedule}
+  stddev_clip: 0.3
+  #stddev_clip: 0.3
+  task_name: ${task_name}
+
+  init_temperature: 0.2
+  action_dim: 6
+  learnable_temperature: False
+
+  ####################################################
+  #discount: ${discount}
+  batch_size: ${batch_size}
+  dist_info: {'type': 'categorical', 
+              'v_min': -10,
+              'v_max': 10,
+              'n_atoms': 11}
+              #'n_atoms': 51
+  ####################################################
+
+hydra:
+  run:
+    dir: ./exp_local/${now:%Y.%m.%d}/${now:%H%M%S}_${hydra.job.override_dirname}
+  sweep:
+    dir: ./exp/${now:%Y.%m.%d}/${now:%H%M}_${agent_cfg.experiment}
+    subdir: ${hydra.job.num}
+  launcher:
+    timeout_min: 4300
+    cpus_per_task: 10
+    gpus_per_node: 1
+    tasks_per_node: 1
+    mem_gb: 160
+    nodes: 1
+    submitit_folder: ./exp/${now:%Y.%m.%d}/${now:%H%M%S}_${agent_cfg.experiment}/.slurm

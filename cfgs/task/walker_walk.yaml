@@ -1,0 +1,10 @@
+defaults:
+  - easy
+  - _self_
+
+task_name: walker_walk
+
+nstep: 1
+batch_size: 512
+#nstep: 1
+#batch_size: 512
